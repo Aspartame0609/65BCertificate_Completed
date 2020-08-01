@@ -20,10 +20,12 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     private static final int STORAGE_CODE = 1000;
-    private EditText name, father_name, age;
+    private EditText name, age;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
         Button mSaveBtn = findViewById(R.id.button);
         name = findViewById(R.id.name);
-        father_name = findViewById(R.id.father_name);
         age = findViewById(R.id.age);
 
         mSaveBtn.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void savePdf() {
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, 20yy");
+        String date = dateFormat.format(calendar.getTime());
+
         Document mDoc = new Document();
 
         String mFileName = "Case Number";
@@ -65,11 +71,12 @@ public class MainActivity extends AppCompatActivity {
 
             String Name = name.getText().toString();
             String Age = age.getText().toString();
-            String Father_Name = father_name.getText().toString();
 
             Font font1 = new Font(Font.FontFamily.TIMES_ROMAN, 25, Font.BOLD | Font.UNDERLINE);
             Font font2 = new Font(Font.FontFamily.TIMES_ROMAN, 16);
             Font font3 = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD | Font.UNDERLINE);
+            Font font4 = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD);
+            Font font5 = new Font(Font.FontFamily.TIMES_ROMAN, 19, Font.BOLD);
 
             Chunk c1 = new Chunk("Addendum", font1);
             //mText.setUnderline(0.5f, -2f);
@@ -81,15 +88,33 @@ public class MainActivity extends AppCompatActivity {
 
             Chunk c3_1 = new Chunk("I  ", font2);
             Chunk c3_2 = new Chunk(Name, font3);
-            Chunk c3_3 = new Chunk("  S/o. Sh  ", font2);
-            Chunk c3_4 = new Chunk(Father_Name, font3);
-            Chunk c3_5 = new Chunk(", Age  ", font2);
-            Chunk c3_6 = new Chunk(Age, font3);
-            Chunk c3_7 = new Chunk("  R/o. ABC Nagar, is a (profession)..... govt. cyber expert/ Police officer/ cyber cafe operator/ private cyber expert/ an advocate, do hereby solemnly declare and affirms as under that-");
+            Chunk c3_3 = new Chunk(", Age  ", font2);
+            Chunk c3_4 = new Chunk(Age, font3);
+            Chunk c3_5 = new Chunk(" is a (profession)..... govt. cyber expert/ Police officer/ cyber cafe operator/ private cyber expert/ an advocate, do hereby solemnly declare and affirms as under that-", font2);
 
-            Chunk c4 = new Chunk("   1.   I produced the computer output.. *(Hard copy/ CD/ DVD/Pen Drive etc.) of the Emails/MMS/SMS records/ Whatsapp messenger service records/ call detail records/ Web. Brower records/ CCTV records etc., which represent the link/ communication between the alleged offence/ offender and crime/ victim (in criminal cases) or between the parties (in civil cases). The details of the E-mails/ MMS/ SMS/ Whatsapp massages/ CCTV records/CDR’s etc. are annexed alongwith this certificate as a CD/ DVD/ Pen Drive as Exhibit A---- or at page 1...", font2);
+            Chunk c4_1 = new Chunk("   1.   I produced the mobile application ", font2);
+            Chunk c4_2 = new Chunk("D-FIR", font4);
+            Chunk c4_3 = new Chunk("  output.. (Hard copy/ CD/ DVD/Pen Drive,etc.) of the E- mails/MMS/SMS records/ Whatsapp messenger service records/ call detail records/ Web. Browser records/ CCTV records etc., which represent the link/communication between the alleged offence/ offender and crime/ victim (in criminal cases) or between the parties (in civil cases).", font2);
 
-            Chunk c5 = new Chunk("   2.   I further confirm that the computer outputs (E-mails/MMS/SMS records/ Whatsapp messenger service records/ call detail records/ Web. Brower records/ CCTV records etc.) containing the information is/ was produced by computer/s during the period our which the computer/s is/was used regularly to store and process the informations.", font2);
+            Chunk c5_1 = new Chunk("   2.   I further confirm that the computer outputs (E-mails/MMS/SMS records/ Whatsapp messenger service records/ call detail records/ Web. Brower records/ CCTV records etc.) containing the information is/ was produced by mobile application ", font2);
+            Chunk c5_2 = new Chunk("D_FIR", font4);
+            Chunk c5_3 = new Chunk(" during the period our mobile application is/was used regularly to store and process the information with absolute confidentiality between recorded evidence with discrete hashed value created by the system for security of evidence and the operator of this mobile application.", font2);
+
+            Chunk c6_1 = new Chunk("   3.   I further confirm that I have lawful control over the use of the mobile application which is/was used producing outputs mentioned above.", font2);
+            Chunk c6_2 = new Chunk("", font2);
+
+            Chunk c7_1 = new Chunk("   4.   I further confirm that throughout the material part of the said period, the mobile application was operating properly or, if not, then in respect of any period in which it was not operating properly or was out of operation during that part of the period, was not such as to affect the electronic record or the accuracy of its contents.", font2);
+            Chunk c7_2 = new Chunk("", font2);
+
+            Chunk c8_1 = new Chunk("   5.   I further confirm that the information contained in the electronic record reproduces or is derived from such information fed into the secured server used by the application in the ordinary course of the said activities.", font2);
+            Chunk c8_2 = new Chunk("", font2);
+
+            Chunk c9_1 = new Chunk("   6.   I further confirm that the contents of this affidavit certificate/ affirmation certificate are true to the best of my knowledge and belief.", font2);
+            Chunk c9_2 = new Chunk("", font2);
+
+            Chunk c10 = new Chunk(" Dated " + date + ".", font5);
+
+            Chunk c11 = new Chunk(" (Signature) Full Name of maker", font5);
 
 
             Paragraph ph = new Paragraph(c1);
@@ -104,23 +129,62 @@ public class MainActivity extends AppCompatActivity {
             ph3.add(c3_3);
             ph3.add(c3_4);
             ph3.add(c3_5);
-            ph3.add(c3_6);
-            ph3.add(c3_7);
 
-            Paragraph ph4 = new Paragraph(c4);
 
-            Paragraph ph5 = new Paragraph(c5);
+            Paragraph ph4 = new Paragraph();
+            ph4.add(c4_1);
+            ph4.add(c4_2);
+            ph4.add(c4_3);
 
+            Paragraph ph5 = new Paragraph();
+            ph5.add(c5_1);
+            ph5.add(c5_2);
+            ph5.add(c5_3);
+
+            Paragraph ph6 = new Paragraph();
+            ph6.add(c6_1);
+            ph6.add(c6_2);
+
+            Paragraph ph7 = new Paragraph();
+            ph7.add(c7_1);
+            ph7.add(c7_2);
+
+            Paragraph ph8 = new Paragraph();
+            ph8.add(c8_1);
+            ph8.add(c8_2);
+
+            Paragraph ph9 = new Paragraph();
+            ph9.add(c9_1);
+            ph9.add(c9_2);
+
+            Paragraph ph10 = new Paragraph(c10);
+
+            Paragraph ph11 = new Paragraph(c11);
+            ph11.setAlignment(Element.ALIGN_RIGHT);
 
             mDoc.add(ph);
             mDoc.add(new Paragraph("  "));
             mDoc.add(ph2);
             mDoc.add(new Paragraph("  "));
             mDoc.add(ph3);
-            //mDoc.add(new Paragraph("  "));
+            mDoc.add(new Paragraph("  "));
             mDoc.add(ph4);
+            mDoc.add(new Paragraph("  "));
             mDoc.add(ph5);
-
+            mDoc.add(new Paragraph("  "));
+            mDoc.add(ph6);
+            mDoc.add(new Paragraph("  "));
+            mDoc.add(ph7);
+            mDoc.add(new Paragraph("  "));
+            mDoc.add(ph8);
+            mDoc.add(new Paragraph("  "));
+            mDoc.add(ph9);
+            mDoc.add(new Paragraph("  "));
+            mDoc.add(new Paragraph("  "));
+            mDoc.add(new Paragraph("  "));
+            mDoc.add(ph10);
+            mDoc.add(new Paragraph("  "));
+            mDoc.add(ph11);
 
             mDoc.close();
 
